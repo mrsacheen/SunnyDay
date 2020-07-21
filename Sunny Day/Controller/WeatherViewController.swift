@@ -9,8 +9,21 @@ protocol WeatherManagerDelegate {
 }
  
 extension ViewController: CLLocationManagerDelegate{
+    
+       @IBAction func locationButtonIsPressed(_ sender: UIButton) {
+        locationManager.requestLocation()
+        
+       }
     func locationManager(_ manager:CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-          print("locations = \(locations)")
+         // print("locations = \(locations)")
+        if let location = locations.last{
+            locationManager.stopUpdatingLocation()
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            
+            weatherManager.fetchWeather(latitude: lat, longitude: lon)
+           
+        }
       }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
@@ -35,8 +48,8 @@ class ViewController: UIViewController {
         weatherManager.delegate = self
         locationSearchBar.delegate = self
     }
-    
    
+    
     
     
 }
