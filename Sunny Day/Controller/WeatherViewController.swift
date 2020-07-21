@@ -9,8 +9,11 @@ protocol WeatherManagerDelegate {
 }
  
 extension ViewController: CLLocationManagerDelegate{
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-       print("location added")
+    func locationManager(_ manager:CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+          print("locations = \(locations)")
+      }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
 }
 
@@ -25,8 +28,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
+        
         weatherManager.delegate = self
         locationSearchBar.delegate = self
     }
